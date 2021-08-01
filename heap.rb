@@ -25,7 +25,6 @@ class Heap
     #heapの再構築
     idx = size - 1
     loop do
-      p "heap: #{@heap}, idx: #{idx}"
       # addしたnodeがrootに来たら終了
       break if idx.zero?
 
@@ -48,15 +47,24 @@ class Heap
     end
 
     #heapの再構築
-    if @heap.size > 1
-      @heap[0] = @haep.pop
+    if size > 1
+      @heap[0] = @heap.pop
       idx = 0
       loop do
         left_id, right_id = children_idx(idx)
+
+        break if left_id.nil? && right_id.nil?
+
         if right_id.nil?
-          swap(idx, left_id)
-          idx = left_id
-        else left_id.nil?
+          target_id = left_id 
+        else
+          target_id = @heap[left_id] < @heap[right_id] ? left_id : right_id
+        end
+
+        if @heap[idx] > @heap[target_id]
+          swap(idx, target_id)
+          idx = target_id
+        else
           break
         end
       end
